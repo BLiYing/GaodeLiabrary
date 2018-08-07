@@ -732,6 +732,9 @@ public class GaodeEntity implements AMapLocationListener {
         void getDistance(double distance);
     }*/
 
+    public void show(){
+
+    }
 
 
 }
