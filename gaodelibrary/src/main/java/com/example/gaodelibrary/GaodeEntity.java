@@ -485,8 +485,9 @@ public class GaodeEntity implements AMapLocationListener {
      * 绘制两多个坐标点之间的线段,从以前位置到现在位置
      */
     private void setUpMap(List<LatLng> rectifications) {
-        if (tracedPolyline != null)
+        if (tracedPolyline != null) {
             tracedPolyline.remove();
+        }
 
         addStartMark(rectifications.get(0));
 //        double angle = UtilsOfGaode.getAngle(rectifications.get(0),rectifications.get(rectifications.size() -1));
@@ -724,17 +725,6 @@ public class GaodeEntity implements AMapLocationListener {
         isRegisterReceiver = false;
     }
 
-    /**
-     * 当前经纬度监听
-     */
-    /*interface  OnGaodLocationListen{
-        void getCurrentGaodeLocation(AMapLocation aMapLocation);
-        void getDistance(double distance);
-    }*/
-
-    public void show(){
-
-    }
 
 
 }
