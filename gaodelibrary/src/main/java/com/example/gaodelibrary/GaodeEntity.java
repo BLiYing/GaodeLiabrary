@@ -9,32 +9,12 @@ import android.graphics.Color;
 import android.os.Build;
 import android.os.PowerManager;
 import android.util.Log;
-import android.util.Pair;
 
 import com.amap.api.location.AMapLocation;
 import com.amap.api.location.AMapLocationClient;
 import com.amap.api.location.AMapLocationClientOption;
 import com.amap.api.location.AMapLocationListener;
 import com.amap.api.location.AMapLocationQualityReport;
-import com.amap.api.maps.AMap;
-import com.amap.api.maps.AMapUtils;
-import com.amap.api.maps.CameraUpdateFactory;
-import com.amap.api.maps.UiSettings;
-import com.amap.api.maps.model.BitmapDescriptorFactory;
-import com.amap.api.maps.model.LatLng;
-import com.amap.api.maps.model.LatLngBounds;
-import com.amap.api.maps.model.Marker;
-import com.amap.api.maps.model.MarkerOptions;
-import com.amap.api.maps.model.MyLocationStyle;
-import com.amap.api.maps.model.Polyline;
-import com.amap.api.maps.model.PolylineOptions;
-import com.amap.api.maps.utils.SpatialRelationUtil;
-import com.amap.api.maps.utils.overlay.SmoothMoveMarker;
-import com.amap.api.trace.TraceOverlay;
-
-import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * 高德地图实时轨迹记录类
@@ -44,19 +24,12 @@ import java.util.List;
 public class GaodeEntity implements AMapLocationListener {
     private final static String TAG = GaodeEntity.class.getName();
     private Context mContext;
-    /**
-     * 初始化地图控制器对象
-     */
-    private AMap aMap;
-    private TraceOverlay mTraceOverlay;
+
     /**
      * 地图client
      */
     private AMapLocationClient locationClient;
     private AMapLocationClientOption locationOption;
-    private MyLocationStyle myLocationStyle;
-    private LatLng lastLatLng;
-    private LatLng currentLatLng;
     /**
      * 是否开始巡河的标志
      */
@@ -66,8 +39,6 @@ public class GaodeEntity implements AMapLocationListener {
      */
     private boolean first_start = true;
 
-    //位置点集合
-    private List<LatLng> trackPoints = new ArrayList<>();
     /**
      * 返回巡河的距离
      */
@@ -102,7 +73,6 @@ public class GaodeEntity implements AMapLocationListener {
 
     private boolean isRegisterReceiver = false;
     private Intent serviceIntent = null;
-    private UiSettings mUiSettings;//定义一个UiSettings对象
 
     public void setDistanceListen(OnGaodeLibraryListen.DistanceListen distanceListen) {
         this.distanceListen = distanceListen;
@@ -131,11 +101,8 @@ public class GaodeEntity implements AMapLocationListener {
      * 初始化相关参数
      *
      * @param context
-     * @param mAmap
      */
-    public GaodeEntity(Context context, AMap mAmap,Class<?> startClass,int resIdIcon) {
-        this.aMap = mAmap;
-        this.mTraceOverlay = new TraceOverlay(aMap);
+    public GaodeEntity(Context context, Class<?> startClass,int resIdIcon) {
         this.mContext = context;
         this.startClass = startClass;
         this.resIdIcon = resIdIcon;
@@ -146,13 +113,9 @@ public class GaodeEntity implements AMapLocationListener {
 
     private void init(){
 
-        mUiSettings = aMap.getUiSettings();//实例化UiSettings类对象
-        mUiSettings.setCompassEnabled(false);
-        mUiSettings.setZoomControlsEnabled(true);
-
         powerManager = (PowerManager) UtilsContextOfGaode.getContext().getSystemService(Context.POWER_SERVICE);
         initLocation();
-        setMyLocationStyle();
+//        setMyLocationStyle();
 
 
     }
@@ -173,14 +136,6 @@ public class GaodeEntity implements AMapLocationListener {
         this.coloroftrace = coloroftrace;
     }
 
-    public LatLng getCurrentLatLng() {
-        return currentLatLng;
-    }
-
-    public void setCurrentLatLng(LatLng currentLatLng) {
-        this.currentLatLng = currentLatLng;
-    }
-
     public double getSumDistance_m() {
         return sumDistance_m;
     }
@@ -189,13 +144,6 @@ public class GaodeEntity implements AMapLocationListener {
         this.sumDistance_m = sumDistance_m;
     }
 
-    public List<LatLng> getTrackPoints() {
-        return trackPoints;
-    }
-
-    public void setTrackPoints(List<LatLng> trackPoints) {
-        this.trackPoints = trackPoints;
-    }
 
     public boolean isIs_trace_started() {
         return is_trace_started;
@@ -277,28 +225,7 @@ public class GaodeEntity implements AMapLocationListener {
         locationClient.setLocationOption(locationOption);
     }
 
-    /**
-     * 设置地图参数
-     */
-    private void setMyLocationStyle() {
 
-        myLocationStyle = new MyLocationStyle();//初始化定位蓝点样式类myLocationStyle.myLocationType(MyLocationStyle.LOCATION_TYPE_LOCATION_ROTATE);//连续定位、
-        /// 且将视角移动到地图中心点，定位点依照设备方向旋转，并且会跟随设备移动。
-        /// （1秒1次定位）如果不设置myLocationType，默认也会执行此种模式。
-        myLocationStyle.strokeColor(Color.argb(0, 0, 0, 0));
-        myLocationStyle.radiusFillColor(Color.argb(0, 0, 0, 0));
-        //连续定位、蓝点不会移动到地图中心点，地图依照设备方向旋转，并且蓝点会跟随设备移动。
-//        myLocationStyle.myLocationType(MyLocationStyle.LOCATION_TYPE_MAP_ROTATE_NO_CENTER);
-//        myLocationStyle.showMyLocation(true);//是否显示定位蓝点
-//        myLocationStyle.myLocationIcon(com.amap.api.maps.model.BitmapDescriptorFactory.fromResource(R.drawable.location_marker));
-        aMap.setMyLocationStyle(myLocationStyle);//设置定位蓝点的Style
-        // 缩放级别（zoom）：地图缩放级别范围为【4-20级】，值越大地图越详细
-        aMap.moveCamera(CameraUpdateFactory.zoomTo(18));
-
-        aMap.setMyLocationEnabled(true);
-
-
-    }
 
     /**
      * 开始定位
@@ -340,12 +267,12 @@ public class GaodeEntity implements AMapLocationListener {
             }
             if (aMapLocation.getErrorCode() == 0) {
 
-                currentLatLng = new LatLng(aMapLocation.getLatitude(), aMapLocation.getLongitude());
+//                currentLatLng = new LatLng(aMapLocation.getLatitude(), aMapLocation.getLongitude());
                 if(first_start && is_trace_started){
                     first_start = false;
 //                    myLocationStyle.showMyLocation(false);//是否显示定位蓝点
 //                    aMap.setMyLocationStyle(myLocationStyle);//设置定位蓝点的Style
-                    addStartMark(currentLatLng);
+//                    addStartMark(currentLatLng);
                 }
 
 
@@ -369,16 +296,16 @@ public class GaodeEntity implements AMapLocationListener {
                 if (is_trace_started) {
 
                     Log.e(TAG, "--------画线-------");
-                    trackPoints.add(currentLatLng);
-                    setUpMap(trackPoints);
-                    float distance = AMapUtils.calculateLineDistance(lastLatLng, currentLatLng);
-                    BigDecimal b = new BigDecimal(String.valueOf(distance));
-                    double d = b.doubleValue();
-                    sumDistance_m += d;
+//                    trackPoints.add(currentLatLng);
+//                    setUpMap(trackPoints);
+//                    float distance = AMapUtils.calculateLineDistance(lastLatLng, currentLatLng);
+//                    BigDecimal b = new BigDecimal(String.valueOf(distance));
+//                    double d = b.doubleValue();
+//                    sumDistance_m += d;
 
 
                 }
-                lastLatLng = currentLatLng;
+//                lastLatLng = currentLatLng;
 
 
             }
@@ -479,90 +406,15 @@ public class GaodeEntity implements AMapLocationListener {
         return str;
     }
 
-    private Polyline tracedPolyline = null;
-
-    /**
-     * 绘制两多个坐标点之间的线段,从以前位置到现在位置
-     */
-    private void setUpMap(List<LatLng> rectifications) {
-        if (tracedPolyline != null) {
-            tracedPolyline.remove();
-        }
-
-        addStartMark(rectifications.get(0));
-//        double angle = UtilsOfGaode.getAngle(rectifications.get(0),rectifications.get(rectifications.size() -1));
-//        addLocationMark(rectifications.get(rectifications.size() -1),angle);
-        // 绘制一个大地曲线
-        tracedPolyline = aMap.addPolyline((new PolylineOptions())
-                .addAll(rectifications).geodesic(true)
-                .width(15).color(coloroftrace));
 
 
-    }
-
-    /**
-     * 添加起始图片
-     */
-    private MarkerOptions markerOption;
-    private Marker marker;
-    private Marker location_Marker;
-
-    public void addStartMark(LatLng latLng) {
-        if (aMap != null && marker != null) {
-            marker.remove();
-        }
-        if (startMarker == 0) {
-            startMarker = R.drawable.ic_me_history_startpoint;
-        }
-        markerOption = new MarkerOptions().icon(com.amap.api.maps.model.BitmapDescriptorFactory.fromResource(startMarker))
-                .position(latLng)
-                .draggable(true);
-        marker = aMap.addMarker(markerOption);
-    }
-
-    public void addLocationMark(LatLng latLng,double angle) {
-        if (aMap != null && location_Marker != null) {
-            location_Marker.remove();
-        }
-        if (locationIcon == 0) {
-            locationIcon = R.drawable.location_marker;
-        }
-        MarkerOptions markerOption = new MarkerOptions().icon(com.amap.api.maps.model.BitmapDescriptorFactory.fromResource(locationIcon))
-                .position(latLng)
-                .rotateAngle((float) angle)
-                .draggable(true);
-        location_Marker = aMap.addMarker(markerOption);
-    }
 
 
-    /**
-     * 添加事件图标
-     * @param latLng
-     * @param aMap
-     */
-    public void addMark(LatLng latLng,AMap aMap,int resIdIcon) {
 
 
-        MarkerOptions markerOption = new MarkerOptions().icon(com.amap.api.maps.model.BitmapDescriptorFactory.fromResource(resIdIcon))
-                .position(latLng)
-                .draggable(true);
-        aMap.addMarker(markerOption);
-    }
 
 
-    //绘制完成清除轨迹
-    public void removeOverlay() {
-        if (mTraceOverlay != null) {
-            mTraceOverlay.remove();
-            mTraceOverlay = new TraceOverlay(aMap);
-        }
-        if (tracedPolyline != null) {
-            tracedPolyline.remove();
-        }
-        if(marker != null){
-            marker.remove();
-        }
-    }
+
 
 
     /**
@@ -570,8 +422,6 @@ public class GaodeEntity implements AMapLocationListener {
      */
     public void startTrace() {
         if (!is_trace_started) {
-            //清空之前收集的定位点
-            getTrackPoints().clear();
             setSumDistance_m(0);
             /**
              * 传入相应的启动界面
@@ -579,8 +429,6 @@ public class GaodeEntity implements AMapLocationListener {
             notification = creatNotification("00:00:00","0.000KM");
             startLocation();
             registerReceiverAndPower();
-            //清空之前收集的定位点
-            trackPoints.clear();
 
             sumDistance_m = 0;
             is_trace_started = true;
@@ -606,7 +454,6 @@ public class GaodeEntity implements AMapLocationListener {
      */
     public void stopTrace() {
         //清空之前的轨迹线
-        removeOverlay();
         NotificationBuildUtil.clearNotification();
         closeServiceAndReceiver();
         // 停止成功后，直接移除is_trace_started记录（便于区分用户没有停止服务，直接杀死进程的情况）

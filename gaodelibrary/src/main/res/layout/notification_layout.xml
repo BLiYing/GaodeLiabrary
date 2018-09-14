@@ -23,10 +23,12 @@
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:scaleType="centerInside"
-            android:src="@drawable/ic_me_history_startpoint" />
+            />
     </LinearLayout>
 
     <LinearLayout
+
+        android:id="@+id/timeLy"
         android:gravity="center_horizontal"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -49,14 +51,14 @@
             android:layout_height="0dp"
             android:layout_weight="1"
             android:gravity="center"
-            android:text=""
+            android:text="巡河时间"
             android:textColor="#999999"
             android:textSize="14sp" />
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/distanceLy"
         android:gravity="center_horizontal"
-
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="2"
@@ -79,10 +81,20 @@
             android:layout_height="0dp"
             android:layout_weight="1"
             android:gravity="center"
-            android:text=""
+            android:text="巡河距离"
             android:textColor="#999999"
             android:textSize="14sp" />
 
     </LinearLayout>
+
+    <TextView
+        android:visibility="gone"
+        android:text="正在运行"
+        android:textColor="#999999"
+        android:textSize="14sp"
+        android:id="@+id/isgoingTv"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="4" />
 
 </LinearLayout>
