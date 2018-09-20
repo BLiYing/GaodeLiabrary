@@ -257,9 +257,7 @@ public class GaodeEntity implements AMapLocationListener {
              * 距离回调
              */
             if(is_trace_started) {
-               /* Intent intent = new Intent();
-                intent.setAction(TONGZHI);
-                mContext.sendBroadcast(intent);*/
+
                 if(distanceListen != null){
                     distanceListen.getDistance(sumDistance_m);
 
