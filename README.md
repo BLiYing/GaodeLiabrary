@@ -52,7 +52,7 @@ gaodeEntity.startTrace();
 gaodeEntity.stopTrace();
 ```
 
-##### 第二步，需要经纬度则实现相应回调监听
+#### 第二步，需要经纬度则实现相应回调监听
 
 ```
 OnGaodeLibraryListen.LocationListen得到AMapLocation对象；
@@ -86,7 +86,7 @@ float distance = AMapUtils.calculateLineDistance(lastLatLng, currentLatLng);
 
 ```
 
-##### 抽稀后上传：
+#### 抽稀后上传：
 
 ```
 /**
