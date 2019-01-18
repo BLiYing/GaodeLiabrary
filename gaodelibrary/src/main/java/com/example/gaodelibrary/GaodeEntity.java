@@ -294,13 +294,13 @@ public class GaodeEntity implements AMapLocationListener {
                 if (is_trace_started) {
 
                     Log.e(TAG, "--------画线-------");
-//                    trackPoints.add(currentLatLng);
-//                    setUpMap(trackPoints);
-//                    float distance = AMapUtils.calculateLineDistance(lastLatLng, currentLatLng);
-//                    BigDecimal b = new BigDecimal(String.valueOf(distance));
-//                    double d = b.doubleValue();
-//                    sumDistance_m += d;
-
+                    /*trackPoints.add(currentLatLng);
+                    setUpMap(trackPoints);
+                    float distance = AMapUtils.calculateLineDistance(lastLatLng, currentLatLng);
+                    BigDecimal b = new BigDecimal(String.valueOf(distance));
+                    double d = b.doubleValue();
+                    sumDistance_m += d;*/
+//
 
                 }
 //                lastLatLng = currentLatLng;
@@ -403,17 +403,6 @@ public class GaodeEntity implements AMapLocationListener {
         }
         return str;
     }
-
-
-
-
-
-
-
-
-
-
-
 
     /**
      * 开启
@@ -545,7 +534,7 @@ public class GaodeEntity implements AMapLocationListener {
     //注册锁屏监听广播
     private void registerPowerReceiver(){
         if (null == wakeLock) {
-            wakeLock = powerManager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "track upload");
+            wakeLock = powerManager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "track:upload");
         }
         if (null == WakeLockScreenReceiver) {
             WakeLockScreenReceiver = new WakeLockScreenReceiver(wakeLock);
