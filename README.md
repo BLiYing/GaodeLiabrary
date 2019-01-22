@@ -2,6 +2,9 @@
 ### 1.2.0版本使用说明
 
 ### 引入依赖库后
+```
+implementation 'com.github.BLiYing:GaodeLiabrary:v2.0.0'
+```
 
 #### 1.在manifest中注册后台服务
 
