@@ -1,3 +1,4 @@
+![轨迹回放动画](https://github.com/BLiYing/GaodeLiabrary/blob/master/GIF.gif)
 ### 1.2.0版本使用说明
 
 ### 引入依赖库后
