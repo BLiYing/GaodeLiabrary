@@ -1,5 +1,7 @@
 ![轨迹回放动画](https://github.com/BLiYing/GaodeLiabrary/blob/master/GIF.gif)
-### 1.2.0版本使用说明
+### v2.0.0版本使用说明
+
+优势：解决使用高德地图，百度地图等，无法在app处于后台时持续定位或者在后台定位一段时间后app被杀死的问题。
 
 ### 引入依赖库后
 ```
@@ -15,7 +17,7 @@ android:enabled="true"
 android:exported="false"
 />
 ```
-#### 2.注册wake_lock权限
+#### 2.注册wake_lock权限(位置权限也需要自己动态申请)
 
 ```
 <uses-permission android:name="android.permission.WAKE_LOCK" />
@@ -81,7 +83,7 @@ float accuracy = aMapLocation.getAccuracy();
 
 画线方法：
 trackPoints.add(currentLatLng);
-//库中自带setUpMap(trackPoints)方法可参考，由于1.2.0版本去掉了2d和3d地图包，只能自己单独实现；
+//库中自带setUpMap(trackPoints)方法可参考，由于v2.0.0版本去掉了2d和3d地图包，只能自己单独实现；
 
 距离方法：
 //计算上一个经纬度和下一个经纬度距离然后叠加
