@@ -267,44 +267,12 @@ public class GaodeEntity implements AMapLocationListener {
                     distanceListen.getDistance(sumDistance_m);
 
                 }
-            }
-            if (aMapLocation.getErrorCode() == 0) {
-
-//                currentLatLng = new LatLng(aMapLocation.getLatitude(), aMapLocation.getLongitude());
-                if(first_start && is_trace_started){
-                    first_start = false;
-//                    myLocationStyle.showMyLocation(false);//是否显示定位蓝点
-//                    aMap.setMyLocationStyle(myLocationStyle);//设置定位蓝点的Style
-//                    addStartMark(currentLatLng);
-                }
-
-
-
-               /* float speed = aMapLocation.getSpeed();
-                if (speed == 0) {
-                    return;
-                }*/
-                //在开发时根据精度（通过AMapLocation类的getAccuracy()方法获取）进行定位点过滤，例如精度大于10米的点不进行业务运算。
-                float accuracy = aMapLocation.getAccuracy();
-                if (accuracy > 100) {
-                    return;
-                }
-                if (is_trace_started) {
-
+                if(drawTraceListen != null) {
                     drawTraceListen.drawTrace();
-                    /*trackPoints.add(currentLatLng);
-                    setUpMap(trackPoints);
-                    float distance = AMapUtils.calculateLineDistance(lastLatLng, currentLatLng);
-                    BigDecimal b = new BigDecimal(String.valueOf(distance));
-                    double d = b.doubleValue();
-                    sumDistance_m += d;*/
-//
-
                 }
-//                lastLatLng = currentLatLng;
-
 
             }
+
         }
 
     }

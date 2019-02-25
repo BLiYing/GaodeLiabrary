@@ -24,6 +24,11 @@
             android:value="90f28635a3ca1d912d55f9184165fced" />
         <!-- 定位需要的服务 -->
         <service android:name="com.amap.api.location.APSService" />
+
+        <service android:name="com.example.gaodelibrary.GaodeLibraryService"
+            android:enabled="true"
+            android:exported="false"
+            />
     </application>
 
 </manifest>

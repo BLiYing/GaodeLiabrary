@@ -17,6 +17,7 @@ import android.widget.TextView;
 import com.amap.api.location.AMapLocation;
 import com.amap.api.location.AMapLocationClient;
 import com.amap.api.maps.AMap;
+import com.amap.api.maps.AMapUtils;
 import com.amap.api.maps.CameraUpdateFactory;
 import com.amap.api.maps.MapView;
 import com.amap.api.maps.model.LatLng;
@@ -29,6 +30,7 @@ import com.example.gaodelibrary.GaodeEntity;
 import com.example.gaodelibrary.OnGaodeLibraryListen;
 import com.example.gaodelibrary.UtilsContextOfGaode;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -165,7 +167,9 @@ public class MainDemoActivity extends AppCompatActivity implements OnGaodeLibrar
 
     @Override
     public void getDistance(double distance) {
-        distanceTv.setText("行走距离：" + distance + "");
+        distanceTv.setText("行走距离：" + distance + "m");
+        GaodeEntity.notification = gaodeEntity.creatNotification("--", distance + "");
+
     }
 
     private void startRequestPermission() {
@@ -177,23 +181,40 @@ public class MainDemoActivity extends AppCompatActivity implements OnGaodeLibrar
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (requestCode == 321) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                gaodeEntity = new GaodeEntity(this, MainDemoActivity.class, R.mipmap.ic_launcher_round);
-                gaodeEntity.setLocationListen(this);
-
-
+                initGaodeMap();
             }
         }
     }
 
     private List<LatLng> trackPoints = new ArrayList<>();
     private LatLng currentLatLng;
+    private LatLng lastLatLng;
 
     @Override
     public void getCurrentGaodeLocation(AMapLocation aMapLocation) {
-//        distanceTv.setText(getSb(aMapLocation).toString());
-        currentLatLng = new LatLng(aMapLocation.getLatitude(), aMapLocation.getLongitude());
-        trackPoints.add(currentLatLng);
+        if (aMapLocation.getErrorCode() == 0) {
 
+            currentLatLng = new LatLng(aMapLocation.getLatitude(), aMapLocation.getLongitude());
+            //在开发时根据精度（通过AMapLocation类的getAccuracy()方法获取）进行定位点过滤，例如精度大于10米的点不进行业务运算。
+            float accuracy = aMapLocation.getAccuracy();
+            if (accuracy > 100) {
+                return;
+            }
+
+            if (gaodeEntity.isIs_trace_started()) {
+
+                trackPoints.add(currentLatLng);
+                setUpMap(trackPoints);
+                float distance = AMapUtils.calculateLineDistance(lastLatLng, currentLatLng);
+                BigDecimal b = new BigDecimal(String.valueOf(distance));
+                double d = b.doubleValue();
+                gaodeEntity.setSumDistance_m(gaodeEntity.getSumDistance_m() + d);
+
+            }
+            lastLatLng = currentLatLng;
+
+
+        }
 
     }
 
@@ -224,6 +245,7 @@ public class MainDemoActivity extends AppCompatActivity implements OnGaodeLibrar
             tracedPolyline.remove();
         }
 
+        //抽稀去燥
         PathSmoothTool pathSmoothTool = new PathSmoothTool();
         pathSmoothTool.setIntensity(4);
         rectifications = pathSmoothTool.pathOptimize(rectifications);
