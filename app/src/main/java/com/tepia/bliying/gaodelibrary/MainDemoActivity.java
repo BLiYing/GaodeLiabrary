@@ -29,6 +29,7 @@ import com.amap.api.maps.model.PolylineOptions;
 import com.example.gaodelibrary.GaodeEntity;
 import com.example.gaodelibrary.OnGaodeLibraryListen;
 import com.example.gaodelibrary.UtilsContextOfGaode;
+import com.tepia.bliying.douglas.Douglas;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -245,10 +246,15 @@ public class MainDemoActivity extends AppCompatActivity implements OnGaodeLibrar
             tracedPolyline.remove();
         }
 
-        //抽稀去燥
+        //高德官方提供的抽稀去燥工具
         PathSmoothTool pathSmoothTool = new PathSmoothTool();
         pathSmoothTool.setIntensity(4);
         rectifications = pathSmoothTool.pathOptimize(rectifications);
+
+
+       //自定义抽稀工具（没有滤波效果）
+       /* Douglas douglas = new Douglas(new ArrayList<>(rectifications), 2);
+        rectifications = douglas.compress();*/
 
         addStartMark(rectifications.get(0));
 //        double angle = UtilsOfGaode.getAngle(rectifications.get(0),rectifications.get(rectifications.size() -1));
