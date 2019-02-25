@@ -1,4 +1,6 @@
 ![轨迹回放动画](https://github.com/BLiYing/GaodeLiabrary/blob/master/GIF.gif)
+### 二维码下载
+![二维码下载](https://github.com/BLiYing/GaodeLiabrary/blob/master/二维码.png)
 ### v2.0.0版本使用说明
 
 优势：解决使用高德地图，百度地图等，无法在app处于后台时持续定位（比如service中）或者在后台定位一段时间后app被杀死的问题。主要思路就是循环播放非常短的一段无声音乐(由音乐app受启发)。
