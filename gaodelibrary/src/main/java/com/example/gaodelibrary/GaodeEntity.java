@@ -63,6 +63,7 @@ public class GaodeEntity implements AMapLocationListener {
     private OnGaodeLibraryListen.DistanceListen distanceListen;
     private OnGaodeLibraryListen.LocationListen locationListen;
     private OnGaodeLibraryListen.NotificationListen notificationListen;
+    private OnGaodeLibraryListen.DrawTraceListen drawTraceListen;
 
     /**
      * 锁屏相关
@@ -84,6 +85,10 @@ public class GaodeEntity implements AMapLocationListener {
 
     public void setNotificationListen(OnGaodeLibraryListen.NotificationListen notificationListen) {
         this.notificationListen = notificationListen;
+    }
+
+    public void setDrawTraceListen(OnGaodeLibraryListen.DrawTraceListen drawTraceListen) {
+        this.drawTraceListen = drawTraceListen;
     }
 
     /**
@@ -275,15 +280,8 @@ public class GaodeEntity implements AMapLocationListener {
 
 
 
-                float speed = aMapLocation.getSpeed();
+               /* float speed = aMapLocation.getSpeed();
                 if (speed == 0) {
-                    return;
-                }
-                //from: http://lbs.amap.com/faq/android/android-location/345
-                //在开发时根据定位类型（通过AMapLocation类的getLocationType()）进行定位点过滤，例如定位类型为6的点不进行业务运算。
-                 /*int locationType = aMapLocation.getLocationType();
-                //基站定位结果.纯粹依赖移动、联通、电信等移动网络定位，定位精度在500米-5000米之间。
-               if (locationType == 6) {
                     return;
                 }*/
                 //在开发时根据精度（通过AMapLocation类的getAccuracy()方法获取）进行定位点过滤，例如精度大于10米的点不进行业务运算。
@@ -293,7 +291,7 @@ public class GaodeEntity implements AMapLocationListener {
                 }
                 if (is_trace_started) {
 
-                    Log.e(TAG, "--------画线-------");
+                    drawTraceListen.drawTrace();
                     /*trackPoints.add(currentLatLng);
                     setUpMap(trackPoints);
                     float distance = AMapUtils.calculateLineDistance(lastLatLng, currentLatLng);
@@ -450,8 +448,6 @@ public class GaodeEntity implements AMapLocationListener {
        /* myLocationStyle.showMyLocation(true);//是否显示定位蓝点
         aMap.setMyLocationStyle(myLocationStyle);//设置定位蓝点的Style*/
 
-        //回复初始定位频率
-        setTransportMode(5000);
     }
 
     /**

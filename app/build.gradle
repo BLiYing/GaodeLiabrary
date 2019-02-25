@@ -28,8 +28,8 @@ dependencies {
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
 
-    compile project(':gaodelibrary')
+    implementation project(':gaodelibrary')
 //    implementation(name: 'AMapLocation_4.2.0_20180810', ext: 'aar')
-
+    implementation 'com.amap.api:3dmap:5.0.0'
 
 }

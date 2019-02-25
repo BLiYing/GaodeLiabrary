@@ -22,4 +22,8 @@ public interface OnGaodeLibraryListen {
         void getNotificationListen(Notification notification);
     }
 
+    interface DrawTraceListen{
+        void drawTrace();
+    }
+
 }
