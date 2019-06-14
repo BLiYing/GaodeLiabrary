@@ -1,4 +1,6 @@
 ![轨迹回放动画](https://github.com/BLiYing/GaodeLiabrary/blob/master/GIF.gif)
+### 二维码下载
+![二维码下载](https://github.com/BLiYing/GaodeLiabrary/blob/master/下载二维码.png)
 ### v2.0.0版本使用说明
 
 优势：解决使用高德地图，百度地图等，无法在app处于后台时持续定位（比如service中）或者在后台定位一段时间后app被杀死的问题。主要思路就是循环播放非常短的一段无声音乐(由音乐app受启发)。
@@ -101,4 +103,31 @@ float distance = AMapUtils.calculateLineDistance(lastLatLng, currentLatLng);
 */
 Douglas douglas = new Douglas(new ArrayList<>(trackPoints), 2);
 ArrayList<LatLng> latLngs_compress = douglas.compress();
+```
+#### 小米神隐模式引导关闭,库中自带OSUtils和XiaomiDeviceUtil类
+```
+ boolean is_xiaomi = OSUtils.ROM_TYPE.MIUI.name().equals(OSUtils.getRomType().name());
+        boolean hasset = SPUtils.getInstance(ResUtils.getContext()).getBoolean("go_set", false);
+
+        if (is_xiaomi && !hasset) {
+            android.support.v7.app.AlertDialog.Builder builder = new android.support.v7.app.AlertDialog.Builder(this);
+            builder.setTitle(R.string.xiaomiMind);
+            builder.setMessage(“为了不影响您的应用使用轨迹功能时退到后台无法使用定位功能，小米手机需要手动开启后台配置--选择 无限制”);
+            builder.setCancelable(false);
+            builder.setPositiveButton(R.string.go_set, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    SPUtils.getInstance(ResUtils.getContext()).putBoolean("go_set", true);
+                    XiaomiDeviceUtil.toConfigApp(StartInspectionActivity.this, XiaomiDeviceUtil.getAppProcessName(ResUtils.getContext()), getString(R.string.app_name));
+                }
+            });
+            builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    finish();
+                }
+            });
+            builder.create().show();
+
+        }
 ```
