@@ -104,3 +104,30 @@ float distance = AMapUtils.calculateLineDistance(lastLatLng, currentLatLng);
 Douglas douglas = new Douglas(new ArrayList<>(trackPoints), 2);
 ArrayList<LatLng> latLngs_compress = douglas.compress();
 ```
+#### 小米神隐模式引导关闭,库中自带OSUtils和XiaomiDeviceUtil类
+```
+ boolean is_xiaomi = OSUtils.ROM_TYPE.MIUI.name().equals(OSUtils.getRomType().name());
+        boolean hasset = SPUtils.getInstance(ResUtils.getContext()).getBoolean("go_set", false);
+
+        if (is_xiaomi && !hasset) {
+            android.support.v7.app.AlertDialog.Builder builder = new android.support.v7.app.AlertDialog.Builder(this);
+            builder.setTitle(R.string.xiaomiMind);
+            builder.setMessage(“为了不影响您的应用使用轨迹功能时退到后台无法使用定位功能，小米手机需要手动开启后台配置--选择 无限制”);
+            builder.setCancelable(false);
+            builder.setPositiveButton(R.string.go_set, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    SPUtils.getInstance(ResUtils.getContext()).putBoolean("go_set", true);
+                    XiaomiDeviceUtil.toConfigApp(StartInspectionActivity.this, XiaomiDeviceUtil.getAppProcessName(ResUtils.getContext()), getString(R.string.app_name));
+                }
+            });
+            builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    finish();
+                }
+            });
+            builder.create().show();
+
+        }
+```
