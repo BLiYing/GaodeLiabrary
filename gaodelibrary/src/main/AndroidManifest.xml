@@ -14,4 +14,8 @@
     <!-- 获取设备信息 -->
     <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
 
+    <!-- 针对android O申请前台服务权限  允许常规应用程序使用Service.startForeground-->
+
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+
 </manifest>

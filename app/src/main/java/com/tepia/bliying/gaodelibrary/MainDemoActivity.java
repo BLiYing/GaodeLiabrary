@@ -13,6 +13,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.amap.api.location.AMapLocation;
 import com.amap.api.location.AMapLocationClient;
@@ -164,6 +165,7 @@ public class MainDemoActivity extends AppCompatActivity implements OnGaodeLibrar
         aMap.setMyLocationEnabled(true);
 
 
+
     }
 
     @Override
@@ -215,6 +217,8 @@ public class MainDemoActivity extends AppCompatActivity implements OnGaodeLibrar
             lastLatLng = currentLatLng;
 
 
+        }else{
+            Toast.makeText(MainDemoActivity.this, aMapLocation.getErrorCode() + aMapLocation.getErrorInfo()+"",Toast.LENGTH_SHORT).show();
         }
 
     }
