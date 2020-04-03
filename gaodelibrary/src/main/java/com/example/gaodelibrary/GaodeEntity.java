@@ -10,6 +10,8 @@ import android.os.Build;
 import android.os.PowerManager;
 import android.util.Log;
 
+import androidx.annotation.Keep;
+
 import com.amap.api.location.AMapLocation;
 import com.amap.api.location.AMapLocationClient;
 import com.amap.api.location.AMapLocationClientOption;
@@ -20,7 +22,6 @@ import com.amap.api.location.AMapLocationQualityReport;
  * 高德地图实时轨迹记录类
  * Created by BLiYing on 2018/5/28.
  */
-
 public class GaodeEntity implements AMapLocationListener {
     private final static String TAG = GaodeEntity.class.getName();
     private Context mContext;
@@ -74,19 +75,20 @@ public class GaodeEntity implements AMapLocationListener {
 
     private boolean isRegisterReceiver = false;
     private Intent serviceIntent = null;
-
+    @Keep
     public void setDistanceListen(OnGaodeLibraryListen.DistanceListen distanceListen) {
         this.distanceListen = distanceListen;
     }
 
+    @Keep
     public void setLocationListen(OnGaodeLibraryListen.LocationListen locationListen) {
         this.locationListen = locationListen;
     }
-
+    @Keep
     public void setNotificationListen(OnGaodeLibraryListen.NotificationListen notificationListen) {
         this.notificationListen = notificationListen;
     }
-
+    @Keep
     public void setDrawTraceListen(OnGaodeLibraryListen.DrawTraceListen drawTraceListen) {
         this.drawTraceListen = drawTraceListen;
     }
@@ -96,10 +98,10 @@ public class GaodeEntity implements AMapLocationListener {
      */
     private Class<?> startClass;
     private int resIdIcon;
-
+    @Keep
     public GaodeEntity(Context context){
         this.mContext = context;
-
+        initLocation();
     }
 
     /**
@@ -107,6 +109,7 @@ public class GaodeEntity implements AMapLocationListener {
      *
      * @param context
      */
+    @Keep
     public GaodeEntity(Context context, Class<?> startClass,int resIdIcon) {
         this.mContext = context;
         this.startClass = startClass;
@@ -140,11 +143,11 @@ public class GaodeEntity implements AMapLocationListener {
     public void setColoroftrace(int coloroftrace) {
         this.coloroftrace = coloroftrace;
     }
-
+    @Keep
     public double getSumDistance_m() {
         return sumDistance_m;
     }
-
+    @Keep
     public void setSumDistance_m(double sumDistance_m) {
         this.sumDistance_m = sumDistance_m;
     }
@@ -157,19 +160,19 @@ public class GaodeEntity implements AMapLocationListener {
     public void setIs_trace_started(boolean is_trace_started) {
         this.is_trace_started = is_trace_started;
     }
-
+    @Keep
     public AMapLocationClient getLocationClient() {
         return locationClient;
     }
-
+    @Keep
     public void setLocationClient(AMapLocationClient locationClient) {
         this.locationClient = locationClient;
     }
-
+    @Keep
     public AMapLocationClientOption getLocationOption() {
         return locationOption;
     }
-
+    @Keep
     public void setLocationOption(AMapLocationClientOption locationOption) {
         this.locationOption = locationOption;
     }
@@ -224,6 +227,7 @@ public class GaodeEntity implements AMapLocationListener {
      *
      * @param interval 定位频率
      */
+    @Keep
     public void setTransportMode(int interval) {
         locationOption = getDefaultOption(interval);
         //设置定位参数
@@ -235,6 +239,7 @@ public class GaodeEntity implements AMapLocationListener {
     /**
      * 开始定位
      */
+    @Keep
     public void startLocation() {
         // 启动定位
         locationClient.startLocation();
@@ -243,12 +248,14 @@ public class GaodeEntity implements AMapLocationListener {
     /**
      * 关闭定位
      */
+    @Keep
     public void closeLocation(){
         if(locationClient != null){
             locationClient.stopLocation();
         }
     }
 
+    @Keep
     @Override
     public void onLocationChanged(AMapLocation aMapLocation) {
 
@@ -373,6 +380,7 @@ public class GaodeEntity implements AMapLocationListener {
     /**
      * 开启
      */
+    @Keep
     public void startTrace() {
         if (!is_trace_started) {
             setSumDistance_m(0);
@@ -405,6 +413,7 @@ public class GaodeEntity implements AMapLocationListener {
     /**
      * 关闭
      */
+    @Keep
     public void stopTrace() {
         //清空之前的轨迹线
         NotificationBuildUtil.clearNotification();
@@ -421,7 +430,7 @@ public class GaodeEntity implements AMapLocationListener {
     /**
      * 开启高德地图记录轨迹
      */
-    public void startGaodeService() {
+    private void startGaodeService() {
         // 开启监听service(前台服务)
         GaodeLibraryService.isCheck = true;
         GaodeLibraryService.isRunning = true;

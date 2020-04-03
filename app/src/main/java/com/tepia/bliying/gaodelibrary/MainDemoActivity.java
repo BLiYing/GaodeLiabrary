@@ -4,10 +4,11 @@ import android.Manifest;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.os.Build;
-import android.support.annotation.NonNull;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatActivity;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -16,7 +17,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.amap.api.location.AMapLocation;
-import com.amap.api.location.AMapLocationClient;
 import com.amap.api.maps.AMap;
 import com.amap.api.maps.AMapUtils;
 import com.amap.api.maps.CameraUpdateFactory;
@@ -30,7 +30,6 @@ import com.amap.api.maps.model.PolylineOptions;
 import com.example.gaodelibrary.GaodeEntity;
 import com.example.gaodelibrary.OnGaodeLibraryListen;
 import com.example.gaodelibrary.UtilsContextOfGaode;
-import com.tepia.bliying.douglas.Douglas;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -135,6 +134,7 @@ public class MainDemoActivity extends AppCompatActivity implements OnGaodeLibrar
              * 千万记得在application中初始化UtilsContextOfGaode.init(this);
              */
             gaodeEntity = new GaodeEntity(this, MainDemoActivity.class, R.mipmap.ic_launcher_round);
+//            gaodeEntity = new GaodeEntity(this);
             gaodeEntity.setDistanceListen(this);
             gaodeEntity.setLocationListen(this);
             gaodeEntity.setDrawTraceListen(this);

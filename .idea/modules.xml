@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/GaodeLibrary.iml" filepath="$PROJECT_DIR$/GaodeLibrary.iml" />
+      <module fileurl="file://$PROJECT_DIR$/GaodeLiabrary.iml" filepath="$PROJECT_DIR$/GaodeLiabrary.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://$PROJECT_DIR$/gaodelibrary/gaodelibrary.iml" filepath="$PROJECT_DIR$/gaodelibrary/gaodelibrary.iml" />
     </modules>

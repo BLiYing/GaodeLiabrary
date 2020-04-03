@@ -10,12 +10,15 @@ import android.os.PowerManager;
 import android.util.Log;
 
 
+import androidx.annotation.Keep;
+
 import java.util.List;
 
 /**
  * 前台服务
  * Created by ly on 2018/5/7.
  */
+@Keep
 public class GaodeLibraryService extends Service{
     public final static String Tag = "GaodeLibraryService";
     public static boolean isCheck = false;
@@ -36,7 +39,6 @@ public class GaodeLibraryService extends Service{
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        // TODO Auto-generated method stub
         Log.e(Tag, "GaodeLibraryService onStartCommand");
         if (mediaPlayer != null) {
             mediaPlayer.start();
@@ -47,7 +49,6 @@ public class GaodeLibraryService extends Service{
 
             @Override
             public void run() {
-                // TODO Auto-generated method stub
 
                 while (isCheck) {
                     try {
@@ -80,7 +81,6 @@ public class GaodeLibraryService extends Service{
 
     @Override
     public IBinder onBind(Intent intent) {
-        // TODO Auto-generated method stub
         return null;
     }
 

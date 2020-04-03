@@ -12,11 +12,12 @@ import android.graphics.PathMeasure;
 import android.graphics.Point;
 import android.graphics.Rect;
 import android.graphics.RectF;
-import android.support.annotation.DrawableRes;
-import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.animation.AccelerateDecelerateInterpolator;
+
+import androidx.annotation.DrawableRes;
+import androidx.annotation.Nullable;
 
 import com.amap.api.maps.model.BitmapDescriptorFactory;
 import com.example.gaodelibrary.ScreenUtil;

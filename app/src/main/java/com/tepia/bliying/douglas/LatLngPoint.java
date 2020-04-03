@@ -1,6 +1,5 @@
 package com.tepia.bliying.douglas;
-
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import com.amap.api.maps.model.LatLng;
 
