@@ -43,8 +43,7 @@ public class MainDemoActivity extends AppCompatActivity implements OnGaodeLibrar
      */
     private GaodeEntity gaodeEntity;
     private TextView distanceTv;
-    private String[] permissions = {Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_BACKGROUND_LOCATION};
-
+    private String[] permissions = {Manifest.permission.ACCESS_COARSE_LOCATION,Manifest.permission.ACCESS_FINE_LOCATION,Manifest.permission.ACCESS_BACKGROUND_LOCATION};
     private AMap aMap;
     private MapView mMapView;
     private MyLocationStyle myLocationStyle;
@@ -78,26 +77,7 @@ public class MainDemoActivity extends AppCompatActivity implements OnGaodeLibrar
         Button endbutton = findViewById(R.id.endBtn);
         distanceTv = findViewById(R.id.distanceTv);
         UtilsContextOfGaode.init(this);
-
-        // 版本判断。当手机系统大于 23 时，才有必要去判断权限是否获取
-       /* if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-
-            // 检查该权限是否已经获取
-            int i = ContextCompat.checkSelfPermission(this, permissions[0]);
-            int j = ContextCompat.checkSelfPermission(this, permissions[1]);
-            // 权限是否已经 授权 GRANTED---授权  DINIED---拒绝
-            if (i != PackageManager.PERMISSION_GRANTED || j != PackageManager.PERMISSION_GRANTED) {
-                // 如果没有授予该权限，就去提示用户请求
-                startRequestPermission();
-            } else {
-                initGaodeMap();
-            }
-        } else {
-            initGaodeMap();
-
-        }*/
         requestPermission();
-
         startbutton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -139,8 +119,19 @@ public class MainDemoActivity extends AppCompatActivity implements OnGaodeLibrar
                         initGaodeMap();
 
                     } else if (permission.shouldShowRequestPermissionRationale) {
-                        // Denied permission without ask never again
-                        Toast.makeText(MainDemoActivity.this,"请开启定位权限",Toast.LENGTH_LONG).show();
+
+                        boolean backgroundLocationPermissionApproved =
+                                ActivityCompat.checkSelfPermission(this,
+                                        Manifest.permission.ACCESS_BACKGROUND_LOCATION)
+                                        == PackageManager.PERMISSION_GRANTED;
+
+                        if (backgroundLocationPermissionApproved){
+                            // Denied permission without ask never again
+                            Toast.makeText(MainDemoActivity.this,"请开启定位权限",Toast.LENGTH_LONG).show();
+                        }else{
+                            Toast.makeText(MainDemoActivity.this,"请始终允许定位，否则应用退到后台或手机锁屏后无法记录运动信息",Toast.LENGTH_LONG).show();
+
+                        }
                     } else {
                         // Denied permission with ask never again
                         //Need to go to the setting
@@ -149,7 +140,6 @@ public class MainDemoActivity extends AppCompatActivity implements OnGaodeLibrar
 
                 });
     }
-
     protected void initGaodeMap() {
         if (aMap == null) {
             aMap = mMapView.getMap();

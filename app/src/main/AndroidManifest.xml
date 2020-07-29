@@ -24,7 +24,10 @@
             android:value="90f28635a3ca1d912d55f9184165fced" />
         <!-- 定位需要的服务 -->
         <service android:name="com.amap.api.location.APSService" />
-
+        <!-- 继续执行用户发起的操作
+        您的应用可能会提供与位置信息有关的工作流，如在驾车时使用精细导航或在跑步时跟踪道路。当用户执行这些类型的任务时，
+        您的应用通常需要在被置于后台后（如当用户按设备上的主屏幕按钮或关闭设备的显示屏时）访问设备的位置信息。
+        要在这种特定类型的用例中保留对设备位置信息的访问权，请启动您已在应用的清单中声明前台服务类型为 "location" 的前台服务：-->
         <service android:name="com.example.gaodelibrary.GaodeLibraryService"
             android:enabled="true"
             android:exported="false"
