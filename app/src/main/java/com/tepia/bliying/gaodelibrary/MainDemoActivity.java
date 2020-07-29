@@ -1,6 +1,7 @@
 package com.tepia.bliying.gaodelibrary;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.os.Build;
@@ -30,6 +31,7 @@ import com.amap.api.maps.model.PolylineOptions;
 import com.example.gaodelibrary.GaodeEntity;
 import com.example.gaodelibrary.OnGaodeLibraryListen;
 import com.example.gaodelibrary.UtilsContextOfGaode;
+import com.tbruyelle.rxpermissions.RxPermissions;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -41,7 +43,7 @@ public class MainDemoActivity extends AppCompatActivity implements OnGaodeLibrar
      */
     private GaodeEntity gaodeEntity;
     private TextView distanceTv;
-    private String[] permissions = {Manifest.permission.ACCESS_FINE_LOCATION};
+    private String[] permissions = {Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_BACKGROUND_LOCATION};
 
     private AMap aMap;
     private MapView mMapView;
@@ -78,12 +80,13 @@ public class MainDemoActivity extends AppCompatActivity implements OnGaodeLibrar
         UtilsContextOfGaode.init(this);
 
         // 版本判断。当手机系统大于 23 时，才有必要去判断权限是否获取
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+       /* if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
 
             // 检查该权限是否已经获取
             int i = ContextCompat.checkSelfPermission(this, permissions[0]);
+            int j = ContextCompat.checkSelfPermission(this, permissions[1]);
             // 权限是否已经 授权 GRANTED---授权  DINIED---拒绝
-            if (i != PackageManager.PERMISSION_GRANTED) {
+            if (i != PackageManager.PERMISSION_GRANTED || j != PackageManager.PERMISSION_GRANTED) {
                 // 如果没有授予该权限，就去提示用户请求
                 startRequestPermission();
             } else {
@@ -92,7 +95,8 @@ public class MainDemoActivity extends AppCompatActivity implements OnGaodeLibrar
         } else {
             initGaodeMap();
 
-        }
+        }*/
+        requestPermission();
 
         startbutton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -124,6 +128,26 @@ public class MainDemoActivity extends AppCompatActivity implements OnGaodeLibrar
             }
         });
 
+    }
+
+    //权限检测
+    private void requestPermission() {
+        RxPermissions rxPermissions = new RxPermissions(this);
+        rxPermissions.requestEach(permissions)
+                .subscribe(permission -> {
+                    if (permission.granted) {
+                        initGaodeMap();
+
+                    } else if (permission.shouldShowRequestPermissionRationale) {
+                        // Denied permission without ask never again
+                        Toast.makeText(MainDemoActivity.this,"请开启定位权限",Toast.LENGTH_LONG).show();
+                    } else {
+                        // Denied permission with ask never again
+                        //Need to go to the setting
+
+                    }
+
+                });
     }
 
     protected void initGaodeMap() {
@@ -175,19 +199,6 @@ public class MainDemoActivity extends AppCompatActivity implements OnGaodeLibrar
 
     }
 
-    private void startRequestPermission() {
-        ActivityCompat.requestPermissions(this, permissions, 321);
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if (requestCode == 321) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                initGaodeMap();
-            }
-        }
-    }
 
     private List<LatLng> trackPoints = new ArrayList<>();
     private LatLng currentLatLng;
