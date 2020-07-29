@@ -43,7 +43,7 @@ public class MainDemoActivity extends AppCompatActivity implements OnGaodeLibrar
      */
     private GaodeEntity gaodeEntity;
     private TextView distanceTv;
-    private String[] permissions = {Manifest.permission.ACCESS_COARSE_LOCATION,Manifest.permission.ACCESS_FINE_LOCATION,Manifest.permission.ACCESS_BACKGROUND_LOCATION};
+    private String[] permissions = {Manifest.permission.ACCESS_FINE_LOCATION,Manifest.permission.ACCESS_BACKGROUND_LOCATION};
     private AMap aMap;
     private MapView mMapView;
     private MyLocationStyle myLocationStyle;
@@ -119,18 +119,22 @@ public class MainDemoActivity extends AppCompatActivity implements OnGaodeLibrar
                         initGaodeMap();
 
                     } else if (permission.shouldShowRequestPermissionRationale) {
-
+                        boolean fineLocationPermissionApproved =
+                                ActivityCompat.checkSelfPermission(this,
+                                        Manifest.permission.ACCESS_FINE_LOCATION)
+                                        == PackageManager.PERMISSION_GRANTED;
+                        if (!fineLocationPermissionApproved) {
+                            Toast.makeText(MainDemoActivity.this,"请开启定位权限",Toast.LENGTH_LONG).show();
+                            return;
+                        }
                         boolean backgroundLocationPermissionApproved =
                                 ActivityCompat.checkSelfPermission(this,
                                         Manifest.permission.ACCESS_BACKGROUND_LOCATION)
                                         == PackageManager.PERMISSION_GRANTED;
 
-                        if (backgroundLocationPermissionApproved){
+                        if (!backgroundLocationPermissionApproved){
                             // Denied permission without ask never again
-                            Toast.makeText(MainDemoActivity.this,"请开启定位权限",Toast.LENGTH_LONG).show();
-                        }else{
                             Toast.makeText(MainDemoActivity.this,"请始终允许定位，否则应用退到后台或手机锁屏后无法记录运动信息",Toast.LENGTH_LONG).show();
-
                         }
                     } else {
                         // Denied permission with ask never again
