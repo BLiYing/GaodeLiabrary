@@ -5,9 +5,9 @@
 
 优势：解决使用高德地图，百度地图等，无法在app处于后台时持续定位（比如service中）或者在后台定位一段时间后app被杀死的问题。主要思路就是循环播放非常短的一段无声音乐(由音乐app受启发)。
 
-### 引入依赖库后
+### 引入依赖库后(由于jcenter已停止维护，请自行下载源码来依赖)
 ```
-implementation 'com.github.BLiYing:GaodeLiabrary:v2.0.0'
+#implementation 'com.github.BLiYing:GaodeLiabrary:v2.0.0'
 ```
 
 #### 1.在manifest中注册后台服务
