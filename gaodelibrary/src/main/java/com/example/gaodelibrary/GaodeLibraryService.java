@@ -21,8 +21,8 @@ import java.util.List;
 @Keep
 public class GaodeLibraryService extends Service{
     public final static String Tag = "GaodeLibraryService";
-    public static boolean isCheck = false;
-    public static boolean isRunning = false;
+    public static volatile boolean isCheck = false;
+    public static volatile boolean isRunning = false;
     private MediaPlayer mediaPlayer;
 
     @Override
